@@ -1,61 +1,231 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# OAST Importadores – API (Laravel)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST para la gestión de importadores del Organismo Autónomo de Servicios Tributarios (OAST).  
+Este backend proporciona los servicios de autenticación, gestión de usuarios y operaciones sobre los datos de importadores, integrándose con un frontend desarrollado en Vue 3.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Descripción del proyecto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Este backend forma parte del Trabajo Final de Máster y tiene como objetivo modernizar la gestión de importadores del OAST, sustituyendo una aplicación legacy por una solución basada en arquitecturas y tecnologías actuales.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Principales responsabilidades de la API:
 
-## Learning Laravel
+- Autenticación de usuarios mediante **Laravel Sanctum**.
+- Gestión de **usuarios** y sus **roles** (`admin` y `consultor`).
+- Exposición de endpoints para la gestión de **importadores**.
+- Validación de datos, seguridad básica y soporte a una SPA en Vue 3.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 2. Tecnologías utilizadas
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **PHP 8.2**
+- **Laravel 11**
+- **Laravel Sanctum** (autenticación)
+- **MySQL / MariaDB** (base de datos)
+- **Composer** (gestión de dependencias)
+- **Git + GitHub** (control de versiones)
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 3. Funcionalidades implementadas
 
-### Premium Partners
+### 3.1. Autenticación
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Login y logout de usuarios mediante cookies de sesión.
+- Protección de rutas con el middleware `auth:sanctum`.
+- Endpoint `/api/user` que devuelve el usuario autenticado junto con sus roles.
 
-## Contributing
+### 3.2. Gestión de usuarios (solo admin)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Listado de usuarios.
+- Creación de nuevos usuarios con rol asignado (`admin` o `consultor`).
+- Edición de datos básicos y cambio de contraseña.
+- Eliminación de usuarios.
+- Roles gestionados mediante tablas `roles` y `role_user` (relación many-to-many).
 
-## Code of Conduct
+### 3.3. Gestión de importadores
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Listado de importadores.
+- Consulta de detalle de un importador.
+- Creación de nuevos importadores mediante formulario en el frontend.
+- Integración con la tabla legada `importad` respetando su estructura original.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 4. Requisitos previos
 
-## License
+- PHP 8.2 o superior
+- Composer 2.x
+- MySQL / MariaDB
+- (Opcional) XAMPP 3.3.0 o similar
+- Git
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 5. Instalación
+
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone https://github.com/YunkyWan/oast-api.git
+   cd oast-api
+
+2. **Instalar dependencias PHP**
+    ```bash
+    composer install
+
+
+3. **Crear el archivo de entorno**
+    ```bash
+    cp .env.example .env
+
+
+4. **Configurar el archivo .env**
+
+    Ajustar, como mínimo, estas variables:
+
+    ```bash
+    APP_NAME=OAST
+    APP_URL=http://localhost:8000
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=oast_importadores
+    DB_USERNAME=root
+    DB_PASSWORD=
+
+    FRONTEND_URL=http://localhost:5173
+    SESSION_DRIVER=cookie
+    SESSION_DOMAIN=localhost
+    SESSION_SECURE_COOKIE=false
+    SESSION_SAME_SITE=lax
+
+    SANCTUM_STATEFUL_DOMAINS=localhost:5173
+
+
+5. **Generar la clave de la aplicación**
+    ```bash
+    php artisan key:generate
+
+
+6. **Crear la base de datos**
+
+    En MySQL / phpMyAdmin:
+    ```bash
+    CREATE DATABASE oast_importadores
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+
+7. **Importar la tabla legada importad**
+
+    Utilizar el script SQL proporcionado (importad.sql) para crear la tabla original de importadores.
+
+8. **Ejecutar migraciones y seeders**
+    ```bash
+    php artisan migrate
+    php artisan db:seed
+    ```
+    Los seeders crean:
+
+    - Usuario administrador: admin@oast.local / 123456
+
+    - Roles admin y consultor
+
+    - Relación del usuario admin con el rol admin.
+
+---
+
+## 6. Puesta en marcha
+
+Iniciar el servidor de desarrollo:
+
+    php artisan serve
+
+
+Por defecto, la API quedará disponible en:
+
+http://localhost:8000
+
+---
+
+## 7. Endpoints principales
+### 7.1. Autenticación
+
+GET /sanctum/csrf-cookie
+Inicializa la cookie CSRF para la SPA.
+
+POST /login
+Cuerpo: { "email": "admin@oast.local", "password": "123456" }
+Inicia sesión y establece las cookies de sesión.
+
+POST /logout
+Cierra la sesión.
+
+GET /api/user
+Devuelve el usuario autenticado y sus roles.
+
+### 7.2. Importadores
+
+Todas estas rutas requieren autenticación (auth:sanctum).
+
+GET /api/importadores
+Lista de importadores.
+
+GET /api/importadores/{id}
+Detalle de un importador.
+
+POST /api/importadores
+Crea un importador nuevo (datos enviados desde el formulario del frontend).
+
+### 7.3. Usuarios (solo admin)
+
+Protegidas por auth:sanctum + middleware admin.
+
+GET /api/usuarios
+Lista de usuarios con su rol principal.
+
+POST /api/usuarios
+Crea un nuevo usuario y lo asigna a un rol.
+
+PUT /api/usuarios/{user}
+Actualiza los datos del usuario (incluyendo rol).
+
+DELETE /api/usuarios/{user}
+Elimina un usuario.
+
+---
+
+## 8. Arquitectura y decisiones técnicas
+
+- Laravel 11 por su madurez, ecosistema y rapidez de desarrollo.
+
+- Sanctum para autenticación segura con SPA sin necesidad de JWT.
+
+- Uso de roles mediante tablas roles y role_user, manteniendo una relación many-to-many flexible.
+
+- Respeto a la estructura original de la tabla importad para facilitar la integración con sistemas existentes del OAST.
+
+Estas decisiones se describen y justifican con mayor detalle en la memoria del TFM (capítulos de materiales, métodos y análisis de alternativas).
+
+---
+
+## 9. Pruebas (plan)
+
+En esta fase del proyecto se ha priorizado el desarrollo funcional.
+En las siguientes iteraciones se contempla:
+
+- Pruebas con PHPUnit de:
+
+  - Autenticación (login/logout).
+
+  - Endpoints CRUD de importadores y usuarios.
+
+- Validación de respuestas JSON y códigos de estado.
+
+- Integración con herramientas de pruebas de API (Postman) y definición de colecciones exportables.
+
+---
