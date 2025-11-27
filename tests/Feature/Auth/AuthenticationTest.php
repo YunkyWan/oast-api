@@ -3,35 +3,46 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'password' => bcrypt('password'),
+        ]);
 
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'email'    => $user->email,
             'password' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertNoContent();
+        $this->assertAuthenticatedAs($user);
+        $response->assertNoContent(); // 204 en Breeze API
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        // Arrange
+        $user = User::factory()->create([
+            'password' => bcrypt('password'),
+        ]);
 
-        $this->post('/login', [
-            'email' => $user->email,
+        // Act: intentamos login con contraseña incorrecta
+        $response = $this->post('/login', [
+            'email'    => $user->email,
             'password' => 'wrong-password',
         ]);
 
+        // Assert: debe redirigir de vuelta al login con errores
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
+
+        // El usuario debe seguir sin autenticarse
         $this->assertGuest();
     }
 
@@ -42,6 +53,6 @@ class AuthenticationTest extends TestCase
         $response = $this->actingAs($user)->post('/logout');
 
         $this->assertGuest();
-        $response->assertNoContent();
+        $response->assertNoContent(); // 204 en Breeze API
     }
 }
