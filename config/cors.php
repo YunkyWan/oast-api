@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL'), 'http://localhost:5173', 'https://oast-web.netlify.app'],
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:5173'), 'http://localhost:5173', 'https://oast-web.netlify.app', 'http://r4wssk8sks0wccsosgcww0wg.46.62.172.10.sslip.io'],
 
     'allowed_origins_patterns' => [],
 
