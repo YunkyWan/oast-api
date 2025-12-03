@@ -12,10 +12,16 @@ class Importador extends Model
     protected $keyType = 'int';
     public $timestamps = false;
 
-    // opcional: define $fillable si vas a actualizar campos concretos
-    // protected $fillable = ['NOMIMP', 'DNIIMP', ...];
+    protected $fillable = [
+        'NOMIMP', 'DNIIMP', 'EORIMP',
+        'EXEIMP', 'PAGIMP',
+        'TELFMP', 'TELMMP', 'CORRMP',
+        'CALIMP', 'NUMIMP', 'BLO1MP', 'POR1MP',
+        'NOMRAP', 'DNIRAP', 'TIREMP', 'TITUMP',
+        'DENCMP', 'OBSEMP',
+        'DIALMP', 'MEALMP', 'AÑALMP',
+    ];
 
-    // ejemplo de accesor para fechas D/M/A si las necesitas compuestas
     public function getFechaAltaAttribute()
     {
         $d = (int)($this->DIALMP ?? 0);

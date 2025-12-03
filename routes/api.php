@@ -15,6 +15,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Importadores
     Route::get('/importadores', [ImportadoresController::class, 'index']);
     Route::get('/importadores/{id}', [ImportadoresController::class, 'show']);
+    Route::put('/importadores/{id}', [ImportadoresController::class, 'update']);
+    Route::delete('/importadores/{id}', [ImportadoresController::class, 'destroy']);
     Route::post('/importadores', [ImportadoresController::class, 'store']);
 
     // Usuarios (solo admin)
