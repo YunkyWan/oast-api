@@ -178,6 +178,9 @@ Lista de importadores.
 GET /api/importadores/{id}
 Detalle de un importador.
 
+PUT /api/importadores/{id}
+Modifica un importador (datos enviados desde el formulario del frontend).
+
 POST /api/importadores
 Crea un importador nuevo (datos enviados desde el formulario del frontend).
 
@@ -213,19 +216,24 @@ Estas decisiones se describen y justifican con mayor detalle en la memoria del T
 
 ---
 
-## 9. Pruebas (plan)
+## 9. Pruebas 
 
-En esta fase del proyecto se ha priorizado el desarrollo funcional.
-En las siguientes iteraciones se contempla:
+El backend incorpora un conjunto de pruebas automatizadas con PHPUnit que cubren las funcionalidades esenciales del sistema. Estas pruebas validan tanto la seguridad como la correcta operación de la API REST, garantizando estabilidad y evitando regresiones durante el desarrollo.
 
-- Pruebas con PHPUnit de:
+Las pruebas implementadas incluyen:
 
-  - Autenticación (login/logout).
+- <b>Autenticación:</b> verificación de login, logout y protección de rutas (Sanctum).
 
-  - Endpoints CRUD de importadores y usuarios.
+- <b>Registro, verificación de correo y recuperación de contraseña:</b> validación completa del flujo de alta y mantenimiento de usuarios.
 
-- Validación de respuestas JSON y códigos de estado.
+- <b>CRUD de usuarios (solo administradores):</b> creación, edición, eliminación y control de permisos.
 
-- Integración con herramientas de pruebas de API (Postman) y definición de colecciones exportables.
+- <b>CRUD de importadores:</b> creación con generación automática de CLAVIM, validaciones, actualización y borrado controlado por roles.
+
+- <b>Validación de respuestas JSON y códigos de estado</b> en todos los endpoints.
+
+Además, se han utilizado colecciones de Postman para pruebas manuales de la API durante el desarrollo.
+
+Estas pruebas aportan una capa adicional de fiabilidad al sistema, asegurando que los componentes críticos funcionan correctamente y que la seguridad se mantiene de forma consistente.
 
 ---
