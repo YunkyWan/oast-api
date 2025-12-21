@@ -46,17 +46,28 @@ class ImportadorDocumentosController extends Controller
         return response()->json(['ok' => true, 'documento' => $doc], 201);
     }
 
+    private function signedUrl(ImportadorDocumento $doc, string $disposition)
+    {
+        return Storage::disk('s3')->temporaryUrl(
+            $doc->ruta,
+            now()->addMinutes(5),
+            [
+                'ResponseContentDisposition' => $disposition.'; filename="'.$doc->nombre_original.'"',
+                'ResponseContentType' => $doc->mime,
+            ]
+        );
+    }
+
+    public function view($id)
+    {
+        $doc = ImportadorDocumento::findOrFail($id);
+        return response()->json(['url' => $this->signedUrl($doc, 'inline')]);
+    }
+
     public function download($id)
     {
         $doc = ImportadorDocumento::findOrFail($id);
-
-        $url = Storage::disk('s3')->temporaryUrl(
-            $doc->ruta,
-            now()->addMinutes(5),
-            ['ResponseContentDisposition' => 'attachment; filename="'.$doc->nombre_original.'"']
-        );
-
-        return response()->json(['url' => $url]);
+        return response()->json(['url' => $this->signedUrl($doc, 'attachment')]);
     }
 
     public function destroy($id)

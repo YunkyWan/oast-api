@@ -19,6 +19,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Documentos (consulta/descarga para todos)
     Route::get('/importadores/{id}/documentos', [ImportadorDocumentosController::class, 'index']);
     Route::get('/documentos/{doc}/download', [ImportadorDocumentosController::class, 'download']);
+    Route::get('/documentos/{doc}/view', [ImportadorDocumentosController::class, 'view']);
 
     // Acciones restringidas a admin
     Route::middleware('admin')->group(function () {

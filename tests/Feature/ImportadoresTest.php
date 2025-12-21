@@ -59,7 +59,6 @@ class ImportadoresTest extends TestCase
     public function admin_puede_crear_un_nuevo_importador()
     {
         $payload = [
-            'CLAVIM' => 100,
             'NOMIMP' => 'Nuevo Importador Test',
             'DNIIMP' => '11111111H',
             'EORIMP' => 'ES',
@@ -70,6 +69,8 @@ class ImportadoresTest extends TestCase
             'TELFMP' => '956528007',
             'CORRMP' => 'test@test.es',
             'EORIMP' => 'ES',
+            'NOMRAP' => 'Representante Test',
+            'DNIRAP' => '12345678Z',
             // añade aquí el mínimo de campos que tu controlador marque como required
         ];
 
@@ -80,7 +81,6 @@ class ImportadoresTest extends TestCase
         $response->assertStatus(201);
 
         $this->assertDatabaseHas('importad', [
-            'CLAVIM' => 100,
             'NOMIMP' => 'Nuevo Importador Test',
         ]);
     }
