@@ -176,10 +176,6 @@ class ImportadoresController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->hasRole('admin')) {
-            return response()->json(['message' => 'No autorizado'], 403);
-        }
-
         $imp = Importador::find($id);
 
         if (! $imp) {
